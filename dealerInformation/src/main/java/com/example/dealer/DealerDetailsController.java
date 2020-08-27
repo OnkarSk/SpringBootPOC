@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,12 +24,18 @@ public class DealerDetailsController {
     private DealerDetailsServiceImpl  dealerDetailsServiceImpl;
     Logger logger = LoggerFactory.getLogger(DealerDetailsController.class);
     
-    @GetMapping("/dealer") 
-    public Iterable<DealerDetails> findAll() {
+    @GetMapping(value = "/dealer-search", produces = MediaType.APPLICATION_XML_VALUE) 
+    public Iterable<DealerDetails> findAllXML() {
        Iterable<DealerDetails> dealers = dealerDetailsServiceImpl.findAll();
        return dealers;
     }
 
+    @GetMapping(value = "dealer") 
+    public Iterable<DealerDetails> findAll() {
+       Iterable<DealerDetails> dealers = dealerDetailsServiceImpl.findAll();
+       return dealers;
+    }
+    
     @SuppressWarnings("rawtypes")
 	@PostMapping("/dealer") 
     public ResponseEntity saveDealer(@RequestBody DealerDetails dealer) throws CustomException {
